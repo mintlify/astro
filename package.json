@@ -1,0 +1,74 @@
+{
+  "name": "@mintlify/astro",
+  "version": "1.0.0",
+  "description": "Mintlify integration for Astro",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./components": {
+      "types": "./dist/components.d.ts",
+      "import": "./dist/components.js"
+    },
+    "./helpers": {
+      "types": "./dist/helpers.d.ts",
+      "import": "./dist/helpers.js"
+    }
+  },
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "tsc",
+    "type": "tsc --noEmit",
+    "format": "prettier --write ."
+  },
+  "author": "Mintlify, Inc.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mintlify/astro.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mintlify/astro/issues"
+  },
+  "homepage": "https://github.com/mintlify/astro#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "@mdx-js/mdx": "^3.1.1",
+    "@mintlify/common": "^1.0.716",
+    "@mintlify/validation": "^0.1.587",
+    "unist-util-visit": "^5.1.0"
+  },
+  "devDependencies": {
+    "@mintlify/components": "^1.0.4",
+    "@types/node": "^25.2.2",
+    "@types/react": "^19.2.13",
+    "astro": "^5.17.1",
+    "mdast": "^2.3.2",
+    "mdast-util-mdx": "^3.0.0",
+    "prettier": "^3.8.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "peerDependencies": {
+    "@astrojs/mdx": "^4.3.1",
+    "@astrojs/react": "^4.4.2",
+    "@mintlify/components": "^1.0.4",
+    "astro": "^5",
+    "react": "^18 || ^19"
+  }
+}
