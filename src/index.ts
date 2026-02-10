@@ -27,10 +27,9 @@ export function mintlify(options?: MintlifyOptions): AstroIntegration {
         initLogger(logger);
 
         const rootDir = fileURLToPath(astroConfig.root);
-        const srcDir = fileURLToPath(astroConfig.srcDir);
         const publicDir = fileURLToPath(astroConfig.publicDir);
-        const contentDir = join(srcDir, 'content', 'docs');
-        const componentsDir = join(srcDir, 'content', 'components');
+        const contentDir = join(rootDir, '.mintlify', 'docs');
+        const componentsDir = join(rootDir, '.mintlify', 'components');
 
         const docsDir = resolve(rootDir, options?.docsDir ?? './docs');
 
@@ -54,7 +53,7 @@ export function mintlify(options?: MintlifyOptions): AstroIntegration {
             typeof docsConfig.favicon === 'string'
               ? docsConfig.favicon
               : docsConfig.favicon.light;
-          await writeFaviconsManifest(srcDir, {
+          await writeFaviconsManifest(rootDir, {
             icons: [
               {
                 rel: 'icon',
