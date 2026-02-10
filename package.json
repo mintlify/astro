@@ -1,6 +1,6 @@
 {
   "name": "@mintlify/astro",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Mintlify integration for Astro",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
