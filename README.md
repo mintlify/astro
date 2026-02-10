@@ -5,7 +5,7 @@ Mintlify integration for Astro. This package syncs Mintlify-style docs content i
 ## Install
 
 ```bash
-npm install @mintlify/astro @astrojs/react @astrojs/mdx astro react react-dom @mintlify/components
+npm install @mintlify/components
 ```
 
 ## Usage
@@ -34,12 +34,6 @@ import { components } from '@mintlify/astro/components';
 <Content components={components} />
 ```
 
-### 3) Use exported types
-
-```ts
-import type { Favicons } from '@mintlify/astro';
-```
-
 ## Expected docs structure
 
 - `./docs/docs.json`
@@ -52,12 +46,4 @@ At build setup time, the integration generates:
 - `src/content/docs/**/*`
 - `src/content/components/**/*`
 - `src/content/generated/favicons.json` (when favicon is configured)
-
-## Migration from local integration (starter)
-
-If your project currently imports local files from `src/integrations/mintlify`, update imports to package entrypoints:
-
-- `./src/integrations/mintlify` -> `@mintlify/astro`
-- `../integrations/mintlify/utils/mintlify-components` -> `@mintlify/astro/components`
-- `../integrations/mintlify/types` -> `@mintlify/astro`
 
