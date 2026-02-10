@@ -1,6 +1,6 @@
 {
   "name": "@mintlify/astro",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "description": "Mintlify integration for Astro",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -27,7 +27,7 @@
   "author": "Mintlify, Inc.",
   "license": "ISC",
   "publishConfig": {
-    "access": "restricted",
+    "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
