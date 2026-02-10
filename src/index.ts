@@ -11,9 +11,8 @@ import { initLogger } from './utils/logger.js';
 import { readDocsConfig } from './utils/read-docs-config.js';
 import { readPageContent } from './utils/read-page-content.js';
 import { writePageContent } from './utils/write-page-content.js';
-import { writeFaviconsManifest } from './utils/write-favicons-manifest.js';
 
-export type { DocsConfig, NavigationConfig, Favicons } from './types.js';
+export type { DocsConfig, NavigationConfig } from './types.js';
 
 export interface MintlifyOptions {
   docsDir?: string;
@@ -47,22 +46,6 @@ export function mintlify(options?: MintlifyOptions): AstroIntegration {
 
         const docsConfig = await readDocsConfig(docsDir);
         const pagePaths = getAllPathsInDocsNav(docsConfig.navigation);
-
-        if (docsConfig.favicon) {
-          const faviconHref =
-            typeof docsConfig.favicon === 'string'
-              ? docsConfig.favicon
-              : docsConfig.favicon.light;
-          await writeFaviconsManifest(rootDir, {
-            icons: [
-              {
-                rel: 'icon',
-                type: 'image/svg+xml',
-                href: faviconHref,
-              },
-            ],
-          });
-        }
 
         logger.info(`Found ${pagePaths.length} pages to sync`);
 
