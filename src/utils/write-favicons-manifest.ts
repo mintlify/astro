@@ -3,10 +3,10 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import type { Favicons } from '../types';
 
 export async function writeFaviconsManifest(
-  srcDir: string,
+  rootDir: string,
   favicons: Favicons,
 ): Promise<void> {
-  const generatedDir = join(srcDir, 'content/generated');
+  const generatedDir = join(rootDir, '.mintlify', 'generated');
   await mkdir(generatedDir, { recursive: true });
 
   const filePath = join(generatedDir, 'favicons.json');

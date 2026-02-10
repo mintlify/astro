@@ -43,7 +43,9 @@ import { components } from '@mintlify/astro/components';
 
 At build setup time, the integration generates:
 
-- `src/content/docs/**/*`
-- `src/content/components/**/*`
-- `src/content/generated/favicons.json` (when favicon is configured)
+- `.mintlify/docs/**/*`
+- `.mintlify/components/**/*`
+- `.mintlify/generated/favicons.json` (when favicon is configured)
+
+These directories are generated build artifacts and should not be edited manually.
 
