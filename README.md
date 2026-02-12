@@ -39,13 +39,13 @@ import { components } from '@mintlify/astro/components';
 - `./docs/docs.json`
 - `./docs/**/*.mdx`
 - `./docs/snippets/*` (optional)
-- assets like `./docs/images`, `./docs/logo`, `./docs/favicon.*` (optional)
+- supported static assets anywhere in `./docs/**` (`.png`, `.jpg`, `.jpeg`, `.gif`, `.webp`, `.svg`, `.ico`, `.mp4`, `.webm`, `.mp3`, `.wav`, `.css`, `.woff`, `.woff2`, `.ttf`, `.eot`)
 
 At build setup time, the integration generates:
 
-- `.mintlify/docs/**/*`
-- `.mintlify/components/**/*`
+- `.mintlify/docs/**/*` (synced page content)
+- `.mintlify/components/**/*` (extracted React components)
+- `.mintlify/static/**/*` (static assets from docs)
 - `.mintlify/generated/favicons.json` (when favicon is configured)
 
 These directories are generated build artifacts and should not be edited manually.
-
