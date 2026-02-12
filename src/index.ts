@@ -1,4 +1,5 @@
 import type { AstroIntegration } from 'astro';
+import { cp } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -10,6 +11,7 @@ import { loadAllSnippets } from './utils/load-all-snippets.js';
 import { initLogger } from './utils/logger.js';
 import { readDocsConfig } from './utils/read-docs-config.js';
 import { readPageContent } from './utils/read-page-content.js';
+import { createStaticAssetMiddleware } from './utils/serve-docs-assets.js';
 import { writePageContent } from './utils/write-page-content.js';
 
 export type { DocsConfig, NavigationConfig } from './types.js';
@@ -19,6 +21,9 @@ export interface MintlifyOptions {
 }
 
 export function mintlify(options?: MintlifyOptions): AstroIntegration {
+  let docsDir: string;
+  let staticDir: string;
+
   return {
     name: '@mintlify/astro',
     hooks: {
@@ -26,18 +31,20 @@ export function mintlify(options?: MintlifyOptions): AstroIntegration {
         initLogger(logger);
 
         const rootDir = fileURLToPath(astroConfig.root);
-        const publicDir = fileURLToPath(astroConfig.publicDir);
         const contentDir = join(rootDir, '.mintlify', 'docs');
         const componentsDir = join(rootDir, '.mintlify', 'components');
+        staticDir = join(rootDir, '.mintlify', 'static');
 
-        const docsDir = resolve(rootDir, options?.docsDir ?? './docs');
+        docsDir = resolve(rootDir, options?.docsDir ?? './docs');
 
         await Promise.all([
           clearContentDirectory(contentDir),
           clearContentDirectory(componentsDir),
+          clearContentDirectory(staticDir),
         ]);
 
-        await copyAssets(docsDir, publicDir);
+        const assetCount = await copyAssets(docsDir, staticDir);
+        logger.info(`Copied ${assetCount} static assets`);
 
         const snippets = await loadAllSnippets(docsDir);
         logger.info(`Loaded ${snippets.length} snippet files`);
@@ -71,6 +78,15 @@ export function mintlify(options?: MintlifyOptions): AstroIntegration {
         );
 
         logger.info(`Synced ${pagePaths.length} pages`);
+      },
+
+      'astro:server:setup': ({ server }) => {
+        server.middlewares.use(createStaticAssetMiddleware(staticDir));
+      },
+
+      'astro:build:done': async ({ dir }) => {
+        const outputDir = fileURLToPath(dir);
+        await cp(staticDir, outputDir, { recursive: true });
       },
     },
   };
