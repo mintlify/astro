@@ -1,3 +1,4 @@
+import { sep } from 'node:path';
 import { divisions, type NavigationConfig, type DocsConfig } from '@mintlify/validation';
 
 export interface NavPage {
@@ -48,6 +49,14 @@ export function isNavPage(entry: NavEntry): entry is NavPage {
 
 export function isNavGroup(entry: NavEntry): entry is NavGroup {
   return 'group' in entry && 'pages' in entry;
+}
+
+function normalizePath(path: string): string {
+  let normalized = sep !== '/' ? path.replaceAll(sep, '/') : path;
+  if (normalized.length > 1 && normalized.endsWith('/')) {
+    normalized = normalized.slice(0, -1);
+  }
+  return normalized;
 }
 
 /**
@@ -152,10 +161,11 @@ export function unwrapNav(nav: NavNode, currentPath: string): NavEntry[] {
  * Returns true if the given path is contained within the navigation entries.
  */
 export function containsPath(entries: NavEntry[], path: string): boolean {
+  const normalized = normalizePath(path);
   return entries.some((entry) =>
     isNavPage(entry)
-      ? entry.href === path
-      : isNavGroup(entry) && containsPath(entry.pages, path),
+      ? normalizePath(entry.href) === normalized
+      : isNavGroup(entry) && containsPath(entry.pages, normalized),
   );
 }
 
@@ -196,8 +206,9 @@ function findFirstPage(entries: NavEntry[]): NavPage | undefined {
  * for footer navigation.
  */
 export function getFooterPages(entries: NavEntry[], currentPath: string) {
+  const normalized = normalizePath(currentPath);
   const pages = flattenPages(entries);
-  const idx = pages.findIndex((p) => p.href === currentPath);
+  const idx = pages.findIndex((p) => normalizePath(p.href) === normalized);
   return {
     prev: idx > 0 ? pages[idx - 1] : null,
     next: idx < pages.length - 1 ? pages[idx + 1] : null,
@@ -217,14 +228,15 @@ export function findGroupForPath(
   entries: NavEntry[],
   path: string,
 ): string | undefined {
+  const normalized = normalizePath(path);
   for (const entry of entries) {
     if (isNavGroup(entry)) {
       for (const page of entry.pages) {
-        if (isNavPage(page) && page.href === path) {
+        if (isNavPage(page) && normalizePath(page.href) === normalized) {
           return entry.group;
         }
         if (isNavGroup(page)) {
-          const nested = findGroupForPath([page], path);
+          const nested = findGroupForPath([page], normalized);
           if (nested) return nested;
         }
       }
