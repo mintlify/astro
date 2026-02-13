@@ -17,6 +17,10 @@
     "./components": {
       "types": "./dist/components.d.ts",
       "import": "./dist/components.js"
+    },
+    "./helpers": {
+      "types": "./dist/helpers.d.ts",
+      "import": "./dist/helpers.js"
     }
   },
   "scripts": {
