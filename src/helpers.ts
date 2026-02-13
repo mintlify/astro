@@ -1,4 +1,3 @@
-import { sep } from 'node:path';
 import { divisions, type NavigationConfig, type DocsConfig } from '@mintlify/validation';
 
 export interface NavPage {
@@ -52,7 +51,7 @@ export function isNavGroup(entry: NavEntry): entry is NavGroup {
 }
 
 function normalizePath(path: string): string {
-  let normalized = sep !== '/' ? path.replaceAll(sep, '/') : path;
+  let normalized = path.replaceAll('\\', '/');
   if (normalized.length > 1 && normalized.endsWith('/')) {
     normalized = normalized.slice(0, -1);
   }
