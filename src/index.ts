@@ -15,6 +15,7 @@ import { createStaticAssetMiddleware } from './utils/serve-docs-assets.js';
 import { writePageContent } from './utils/write-page-content.js';
 
 export type { DocsConfig, NavigationConfig } from './types.js';
+export { readDocsConfig } from './utils/read-docs-config.js';
 
 export interface MintlifyOptions {
   docsDir?: string;
