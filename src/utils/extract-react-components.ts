@@ -16,6 +16,7 @@ import {
   isMdxJsxAttribute,
   createMdxJsxAttribute,
   allowedComponents,
+  rehypeCodeBlocks,
 } from '@mintlify/common';
 import { getLogger } from './logger.js';
 
@@ -233,6 +234,7 @@ async function compileCompoundComponent(
     outputFormat: 'program',
     development: false,
     providerImportSource: MDX_COMPONENTS_PATH,
+    rehypePlugins: [rehypeCodeBlocks],
   });
 
   const compiledStr = String(compiled)
