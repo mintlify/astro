@@ -19,13 +19,16 @@ export function createStaticAssetMiddleware(
       return next();
     }
 
-    const relativePath = pathname.startsWith('/') ? pathname.slice(1) : pathname;
+    const relativePath = pathname.startsWith('/')
+      ? pathname.slice(1)
+      : pathname;
     if (!relativePath) return next();
     if (!isSupportedStaticAsset(relativePath)) return next();
 
     const filePath = resolve(normalizedDir, relativePath);
     const relativeToRoot = relative(normalizedDir, filePath);
-    if (relativeToRoot.startsWith('..') || isAbsolute(relativeToRoot)) return next();
+    if (relativeToRoot.startsWith('..') || isAbsolute(relativeToRoot))
+      return next();
 
     try {
       const stats = await stat(filePath);

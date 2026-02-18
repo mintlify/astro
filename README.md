@@ -31,6 +31,7 @@ export default defineConfig({
 import { render } from 'astro:content';
 import { components } from '@mintlify/astro/components';
 ---
+
 <Content components={components} />
 ```
 

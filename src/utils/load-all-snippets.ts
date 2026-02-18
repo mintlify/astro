@@ -44,9 +44,7 @@ async function scanDirectory(
   return files;
 }
 
-export async function loadAllSnippets(
-  docsDir: string,
-): Promise<SnippetFile[]> {
+export async function loadAllSnippets(docsDir: string): Promise<SnippetFile[]> {
   const files = await scanDirectory(docsDir, docsDir);
   const snippets: SnippetFile[] = [];
 

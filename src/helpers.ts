@@ -1,4 +1,8 @@
-import { divisions, type NavigationConfig, type DocsConfig } from '@mintlify/validation';
+import {
+  divisions,
+  type NavigationConfig,
+  type DocsConfig,
+} from '@mintlify/validation';
 
 export interface NavPage {
   href: string;
@@ -215,9 +219,7 @@ export function getFooterPages(entries: NavEntry[], currentPath: string) {
 }
 
 function flattenPages(entries: NavEntry[]): NavPage[] {
-  return entries.flatMap((x) =>
-    isNavGroup(x) ? flattenPages(x.pages) : [x],
-  );
+  return entries.flatMap((x) => (isNavGroup(x) ? flattenPages(x.pages) : [x]));
 }
 
 /**
