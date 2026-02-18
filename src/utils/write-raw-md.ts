@@ -1,5 +1,5 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
+import { join } from 'node:path';
 
 export async function writeRawMd(
   pagePaths: string[],
@@ -19,12 +19,20 @@ export async function writeRawMd(
         }
       }
 
-      const outputFilePath = pagePath.startsWith('index')
-        ? pagePath.replace(/^index/, '') + '.md'
-        : `${pagePath}.md`;
-      const outputPath = join(outputDir, outputFilePath);
-      await mkdir(dirname(outputPath), { recursive: true });
-      await writeFile(outputPath, content);
+      let filePath: string;
+      if (pagePath === 'index') {
+        filePath = join(outputDir, 'index.md');
+      } else {
+        const parts = pagePath.split('/');
+        const fileName = parts.pop() + '.md';
+        const dirPath = join(outputDir, ...parts);
+        if (parts.length > 0) {
+          await mkdir(dirPath, { recursive: true });
+        }
+        filePath = join(dirPath, fileName);
+      }
+
+      await writeFile(filePath, content);
     }),
   );
 }

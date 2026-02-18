@@ -12,7 +12,6 @@ import { initLogger } from './utils/logger.js';
 import { readDocsConfig } from './utils/read-docs-config.js';
 import { readPageContent } from './utils/read-page-content.js';
 import { createStaticAssetMiddleware } from './utils/serve-docs-assets.js';
-import { createRawMdMiddleware } from './utils/serve-raw-md.js';
 import { writePageContent } from './utils/write-page-content.js';
 import { writeRawMd } from './utils/write-raw-md.js';
 
@@ -60,7 +59,9 @@ export function mintlify(options?: MintlifyOptions): AstroIntegration {
 
         logger.info(`Found ${pagePaths.length} pages to sync`);
 
-        await Promise.all(
+        await Promise.all([
+          writeRawMd(pagePaths, docsDir, staticDir),
+
           pagePaths.map(async (pagePath) => {
             try {
               const { content, slug } = await readPageContent(
@@ -79,20 +80,18 @@ export function mintlify(options?: MintlifyOptions): AstroIntegration {
               logger.warn(`Failed to read content for ${pagePath}: ${error}`);
             }
           }),
-        );
+        ]);
 
         logger.info(`Synced ${pagePaths.length} pages`);
       },
 
       'astro:server:setup': ({ server }) => {
         server.middlewares.use(createStaticAssetMiddleware(staticDir));
-        server.middlewares.use(createRawMdMiddleware(docsDir));
       },
 
       'astro:build:done': async ({ dir }) => {
         const outputDir = fileURLToPath(dir);
         await cp(staticDir, outputDir, { recursive: true });
-        await writeRawMd(pagePaths, docsDir, outputDir);
       },
     },
   };

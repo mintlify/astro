@@ -17,6 +17,7 @@ const SUPPORTED_STATIC_ASSETS: Record<string, string> = {
   '.woff2': 'font/woff2',
   '.ttf': 'font/ttf',
   '.eot': 'application/vnd.ms-fontobject',
+  '.md': 'text/plain',
 };
 
 export function isSupportedStaticAsset(pathname: string): boolean {
