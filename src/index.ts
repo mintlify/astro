@@ -25,7 +25,6 @@ export interface MintlifyOptions {
 export function mintlify(options?: MintlifyOptions): AstroIntegration {
   let docsDir: string;
   let staticDir: string;
-  let pagePaths: string[];
 
   return {
     name: '@mintlify/astro',
@@ -55,14 +54,14 @@ export function mintlify(options?: MintlifyOptions): AstroIntegration {
         const userComponents = await findUserComponents(docsDir);
 
         const docsConfig = await readDocsConfig(docsDir);
-        pagePaths = getAllPathsInDocsNav(docsConfig.navigation);
+        const pagePaths = getAllPathsInDocsNav(docsConfig.navigation);
 
         logger.info(`Found ${pagePaths.length} pages to sync`);
 
         await Promise.all([
           writeRawMd(pagePaths, docsDir, staticDir),
 
-          pagePaths.map(async (pagePath) => {
+          ...pagePaths.map(async (pagePath) => {
             try {
               const { content, slug } = await readPageContent(
                 pagePath,

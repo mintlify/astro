@@ -1,5 +1,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { parseFrontmatter } from '@mintlify/common';
 
 export async function writeRawMd(
   pagePaths: string[],
@@ -32,7 +33,8 @@ export async function writeRawMd(
         filePath = join(dirPath, fileName);
       }
 
-      await writeFile(filePath, content);
+      const { body } = parseFrontmatter(content.toString());
+      await writeFile(filePath, body);
     }),
   );
 }
