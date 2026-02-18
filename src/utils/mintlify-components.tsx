@@ -35,9 +35,11 @@ const Wrapper = ({ children }: { children?: ReactNode }) => (
 
 const MintlifyComponents = {
   Accordion,
+  AccordionGroup: Accordion.Group,
   Badge,
   Callout,
   Card,
+  CardGroup: Columns,
   Check,
   CodeBlock,
   CodeGroup,
@@ -52,6 +54,7 @@ const MintlifyComponents = {
   Note,
   Panel,
   Property,
+  ResponseField: Property,
   Steps,
   Tabs,
   Tile,
@@ -63,10 +66,8 @@ const MintlifyComponents = {
 };
 
 const placeholderComponents: Record<string, typeof Wrapper> = {
-  AccordionGroup: Wrapper,
-  ApiPlayground: Wrapper,
-  CardGroup: Wrapper,
   Column: Wrapper,
+  ApiPlayground: Wrapper,
   CustomCode: Wrapper,
   CustomComponent: Wrapper,
   DynamicCustomComponent: Wrapper,
@@ -80,7 +81,6 @@ const placeholderComponents: Record<string, typeof Wrapper> = {
   PreviewButton: Wrapper,
   RequestExample: Wrapper,
   ResponseExample: Wrapper,
-  ResponseField: Wrapper,
   Snippet: Wrapper,
   SnippetGroup: Wrapper,
   View: Wrapper,
