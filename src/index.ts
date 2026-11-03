@@ -7,6 +7,7 @@ import { getAllPathsInDocsNav } from '@mintlify/common';
 import { clearContentDirectory } from './utils/clear-content-directory.js';
 import { copyAssets } from './utils/copy-assets.js';
 import { findUserComponents } from './utils/find-user-components.js';
+import { isSafePagePath } from './utils/is-safe-page-path.js';
 import { loadAllSnippets } from './utils/load-all-snippets.js';
 import { initLogger } from './utils/logger.js';
 import { readDocsConfig } from './utils/read-docs-config.js';
@@ -54,7 +55,13 @@ export function mintlify(options?: MintlifyOptions): AstroIntegration {
         const userComponents = await findUserComponents(docsDir);
 
         const docsConfig = await readDocsConfig(docsDir);
-        const pagePaths = getAllPathsInDocsNav(docsConfig.navigation);
+        const pagePaths = getAllPathsInDocsNav(docsConfig.navigation).filter(
+          (pagePath) => {
+            if (isSafePagePath(pagePath)) return true;
+            logger.warn(`Skipping page outside docs directory: ${pagePath}`);
+            return false;
+          },
+        );
 
         logger.info(`Found ${pagePaths.length} pages to sync`);
 
